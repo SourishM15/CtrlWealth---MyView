@@ -88,28 +88,6 @@ const HomePage: React.FC = () => {
   return (
     <main className="container mx-auto px-4 py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Theme Preview */}
-        <div className="lg:col-span-12 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Light Theme</h3>
-              <img 
-                src="https://images.pexels.com/photos/5473337/pexels-photo-5473337.jpeg" 
-                alt="Light theme preview" 
-                className="w-full h-48 object-cover rounded"
-              />
-            </div>
-            <div className="bg-gray-900 rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-2 text-white">Dark Theme</h3>
-              <img 
-                src="https://images.pexels.com/photos/5473298/pexels-photo-5473298.jpeg" 
-                alt="Dark theme preview" 
-                className="w-full h-48 object-cover rounded"
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Sidebar with chat */}
         <div className="lg:col-span-3">
           <ChatInterface onChatQuery={() => {}} />
