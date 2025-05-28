@@ -24,6 +24,18 @@ export const generalResponses: ResponseTemplate[] = [
   {
     keywords: ['help', 'how', 'use', 'guide'],
     response: 'You can ask me about specific neighborhoods, compare demographics, or inquire about population, age distribution, and median income across different areas of Seattle.'
+  },
+  {
+    keywords: ['thanks', 'thank you', 'thx', 'appreciate'],
+    response: "You're welcome! Let me know if you have any other questions about Seattle's neighborhoods."
+  },
+  {
+    keywords: ['bye', 'goodbye', 'see you', 'farewell'],
+    response: "Goodbye! Feel free to come back if you need more information about Seattle's neighborhoods."
+  },
+  {
+    keywords: ['great', 'awesome', 'excellent', 'perfect', 'nice'],
+    response: "I'm glad I could help! Is there anything else you'd like to know about Seattle's neighborhoods?"
   }
 ];
 
@@ -50,6 +62,13 @@ export const getResponseForInput = (input: string): string => {
   // Normalize input
   const normalizedInput = input.toLowerCase();
   
+  // Check for friendly interactions first
+  for (const template of generalResponses) {
+    if (template.keywords.some(keyword => normalizedInput.includes(keyword))) {
+      return template.response;
+    }
+  }
+  
   // Check for specific neighborhood mentions
   for (const neighborhood of neighborhoods) {
     if (normalizedInput.includes(neighborhood.toLowerCase())) {
@@ -60,13 +79,8 @@ export const getResponseForInput = (input: string): string => {
     }
   }
   
-  // Check all response templates
-  const allTemplates = [
-    ...generalResponses, 
-    ...neighborhoodResponses
-  ];
-  
-  for (const template of allTemplates) {
+  // Check neighborhood-specific responses
+  for (const template of neighborhoodResponses) {
     if (template.keywords.some(keyword => normalizedInput.includes(keyword))) {
       return template.response;
     }
