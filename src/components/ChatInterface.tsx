@@ -12,7 +12,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
     {
       id: '1',
       role: 'system',
-      content: 'Welcome to the Inequality Forecast Dashboard. Ask me any questions about inequality data for the US or Washington State!',
+      content: 'Welcome! Ask me anything about Seattle neighborhoods - population, demographics, income levels, or specific areas like Capitol Hill, Ballard, or South Lake Union.',
       timestamp: new Date()
     }
   ]);
@@ -58,13 +58,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-md flex flex-col transition-all duration-300 ease-in-out ${
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md flex flex-col transition-all duration-300 ease-in-out ${
       isExpanded ? 'h-[500px]' : 'h-[300px]'
     }`}>
-      <div className="flex items-center justify-between bg-indigo-600 text-white rounded-t-lg p-3">
+      <div className="flex items-center justify-between bg-indigo-600 dark:bg-indigo-800 text-white rounded-t-lg p-3">
         <h3 className="font-semibold flex items-center">
           <MessageCircle size={18} className="mr-2" />
-          Chat Assistant
+          Seattle Neighborhoods Assistant
         </h3>
         <button 
           onClick={toggleExpand}
@@ -94,14 +94,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
           >
             <div className={`inline-block max-w-[80%] px-3 py-2 rounded-lg ${
               message.role === 'user'
-                ? 'bg-indigo-600 text-white'
+                ? 'bg-indigo-600 text-white dark:bg-indigo-500'
                 : message.role === 'system'
-                  ? 'bg-gray-100 text-gray-800 border border-gray-200'
-                  : 'bg-gray-200 text-gray-800'
+                  ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600'
+                  : 'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200'
             }`}>
               {message.content}
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
           </div>
@@ -109,18 +109,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
         <div ref={chatEndRef} />
       </div>
       
-      <form onSubmit={handleSubmit} className="border-t border-gray-200 p-3">
+      <form onSubmit={handleSubmit} className="border-t border-gray-200 dark:border-gray-700 p-3">
         <div className="flex">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask about inequality data..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            placeholder="Ask about Seattle neighborhoods..."
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400"
           />
           <button 
             type="submit"
-            className="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             <Send size={16} />
           </button>
