@@ -1,6 +1,6 @@
 import React from 'react';
 import { DemographicsSummary } from '../types/demographics';
-import { X, Users, Baby, Briefcase, Heart, DollarSign } from 'lucide-react';
+import { X, Users, Baby, Briefcase, Heart, DollarSign, Male, Female } from 'lucide-react';
 
 interface DemographicsModalProps {
   neighborhoodName: string;
@@ -83,15 +83,21 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
 
           <div className="mt-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Gender Distribution</h3>
-            <div className="bg-gray-100 rounded-lg h-4 overflow-hidden">
-              <div 
-                className="bg-blue-500 h-full"
-                style={{ width: `${data.genderRatio.male}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-2 text-sm">
-              <span>Male: {data.genderRatio.male}%</span>
-              <span>Female: {data.genderRatio.female}%</span>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-blue-50 rounded-lg p-4 text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                  <Male className="w-8 h-8 text-blue-600" />
+                </div>
+                <p className="text-sm text-gray-600">Male</p>
+                <p className="text-xl font-bold text-gray-900">{data.genderRatio.male}%</p>
+              </div>
+              <div className="bg-pink-50 rounded-lg p-4 text-center">
+                <div className="bg-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                  <Female className="w-8 h-8 text-pink-600" />
+                </div>
+                <p className="text-sm text-gray-600">Female</p>
+                <p className="text-xl font-bold text-gray-900">{data.genderRatio.female}%</p>
+              </div>
             </div>
           </div>
         </div>
