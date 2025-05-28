@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
     if (!mapRef.current) return;
 
     const width = 960;
-    const height = 700; // Increased height for better visibility
+    const height = 700;
     
     // Clear previous content
     d3.select(mapRef.current).selectAll("*").remove();
@@ -28,11 +28,11 @@ const HomePage: React.FC = () => {
       .attr("height", height)
       .attr("fill", "#f8fafc");
 
-    // Custom projection centered on Washington
+    // Custom projection centered on Washington with proper rotation
     const projection = d3.geoAlbers()
-      .center([-120.7, 47.4]) // Center on Washington
-      .rotate([0, 0])
-      .scale(5000) // Increased scale for bigger view
+      .center([-120.7, 47.4])
+      .rotate([0, 0, -15]) // Add rotation to fix orientation
+      .scale(5000)
       .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
