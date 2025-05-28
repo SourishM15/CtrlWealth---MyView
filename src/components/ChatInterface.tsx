@@ -18,16 +18,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const processQuestion = (question: string) => {
+    // Split the input into individual questions based on common separators
+    const questions = question
+      .split(/[?.,!]\s+/)
+      .map(q => q.trim())
+      .filter(q => q.length > 0)
+      .map(q => q.endsWith('?') ? q : `${q}?`);
+
+    return questions;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
-    
+    if (!inputValue.trim() || isProcessing) return;
+
+    setIsProcessing(true);
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -38,19 +51,31 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
     setMessages(prev => [...prev, userMessage]);
     onChatQuery(inputValue);
     setInputValue('');
+
+    // Process multiple questions
+    const questions = processQuestion(userMessage.content);
     
-    setTimeout(() => {
-      const responseContent = getResponseForInput(inputValue);
+    // Handle each question with a slight delay between responses
+    for (let i = 0; i < questions.length; i++) {
+      const question = questions[i];
+      const responseContent = getResponseForInput(question);
       
+      // Add a small delay between responses to make it feel more natural
+      if (i > 0) {
+        await new Promise(resolve => setTimeout(resolve, 800));
+      }
+
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: (Date.now() + i + 1).toString(),
         role: 'assistant',
         content: responseContent,
         timestamp: new Date()
       };
       
       setMessages(prev => [...prev, assistantMessage]);
-    }, 500);
+    }
+
+    setIsProcessing(false);
   };
 
   const toggleExpand = () => {
@@ -71,8 +96,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
           className="text-indigo-100 hover:text-white transition-colors"
         >
           {isExpanded ? (
-            <svg xmlns="http://www.w3.org/2000/svg\" className="h-4 w-4\" fill="none\" viewBox="0 0 24 24\" stroke="currentColor">
-              <path strokeLinecap="round\" strokeLinejoin="round\" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           ) : (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,11 +141,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onChatQuery }) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask about Seattle neighborhoods..."
+            disabled={isProcessing}
             className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400"
           />
           <button 
             type="submit"
-            className="bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            disabled={isProcessing}
+            className={`bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+              isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             <Send size={16} />
           </button>
