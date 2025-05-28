@@ -47,10 +47,10 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800">
-          <MapPin size={18} className="mr-2 text-indigo-600" />
+        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800 dark:text-gray-200">
+          <MapPin size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
           Region
         </h3>
         <div className="flex space-x-2">
@@ -58,8 +58,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleRegionChange('us')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.region === 'us' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             United States
@@ -68,8 +68,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleRegionChange('washington')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.region === 'washington' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Washington
@@ -78,8 +78,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleRegionChange('comparison')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.region === 'comparison' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Comparison
@@ -88,8 +88,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800">
-          <Calendar size={18} className="mr-2 text-indigo-600" />
+        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800 dark:text-gray-200">
+          <Calendar size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
           Timeframe
         </h3>
         <div className="flex space-x-2">
@@ -97,8 +97,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleTimeframeChange('current')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.timeframe === 'current' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Current
@@ -107,8 +107,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleTimeframeChange('historical')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.timeframe === 'historical' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Historical
@@ -117,8 +117,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             onClick={() => handleTimeframeChange('forecast')}
             className={`px-4 py-2 rounded-md transition-colors ${
               filters.timeframe === 'forecast' 
-                ? 'bg-indigo-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 dark:bg-indigo-500 text-white' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Forecast
@@ -127,35 +127,35 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800">
-          <LineChart size={18} className="mr-2 text-indigo-600" />
+        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800 dark:text-gray-200">
+          <LineChart size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
           Metrics
         </h3>
         <div className="grid grid-cols-2 gap-2">
           {metricOptions.map(metric => (
             <label 
               key={metric.id}
-              className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-50"
+              className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               <input
                 type="checkbox"
                 checked={filters.metrics.includes(metric.id)}
                 onChange={() => handleMetricToggle(metric.id)}
-                className="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+                className="form-checkbox h-5 w-5 text-indigo-600 dark:text-indigo-400 rounded focus:ring-indigo-500 dark:focus:ring-indigo-400"
               />
-              <span>{metric.label}</span>
+              <span className="text-gray-700 dark:text-gray-300">{metric.label}</span>
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800">
-          <Sliders size={18} className="mr-2 text-indigo-600" />
+        <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800 dark:text-gray-200">
+          <Sliders size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
           Year Range
         </h3>
         <div className="space-y-3">
-          <div className="flex justify-between">
+          <div className="flex justify-between text-gray-700 dark:text-gray-300">
             <span>{filters.yearRange[0]}</span>
             <span>{filters.yearRange[1]}</span>
           </div>
@@ -166,7 +166,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
               max={2035}
               value={filters.yearRange[0]}
               onChange={(e) => handleYearRangeChange(e, 0)}
-              className="w-full"
+              className="w-full accent-indigo-600 dark:accent-indigo-400"
             />
             <input
               type="range"
@@ -174,7 +174,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
               max={2035}
               value={filters.yearRange[1]}
               onChange={(e) => handleYearRangeChange(e, 1)}
-              className="w-full"
+              className="w-full accent-indigo-600 dark:accent-indigo-400"
             />
           </div>
         </div>
