@@ -28,10 +28,9 @@ const HomePage: React.FC = () => {
       .attr("height", height)
       .attr("fill", "#f8fafc");
 
-    // Custom projection centered on Washington with proper rotation
+    // Custom projection centered on Washington
     const projection = d3.geoAlbers()
       .center([-120.7, 47.4])
-      .rotate([0, 0, -15]) // Add rotation to fix orientation
       .scale(5000)
       .translate([width / 2, height / 2]);
 
