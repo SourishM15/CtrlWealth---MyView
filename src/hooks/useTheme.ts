@@ -4,8 +4,10 @@ export const useTheme = () => {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return savedTheme === 'dark' || (!savedTheme && prefersDark);
+      if (savedTheme) {
+        return savedTheme === 'dark';
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return false;
   });
@@ -22,7 +24,7 @@ export const useTheme = () => {
   }, [isDark]);
 
   const toggle = () => {
-    setIsDark(prev => !prev);
+    setIsDark(!isDark);
   };
 
   return { isDark, toggle };
