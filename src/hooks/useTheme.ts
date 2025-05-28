@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 
 export const useTheme = () => {
   const [isDark, setIsDark] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        return savedTheme === 'dark';
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Check localStorage first
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme === 'dark';
     }
-    return false;
+    // Fall back to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    const root = document.documentElement;
+    
     if (isDark) {
       root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -23,9 +23,7 @@ export const useTheme = () => {
     }
   }, [isDark]);
 
-  const toggle = () => {
-    setIsDark(!isDark);
-  };
+  const toggle = () => setIsDark(prev => !prev);
 
   return { isDark, toggle };
 };
