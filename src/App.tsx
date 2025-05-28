@@ -9,7 +9,7 @@ import ThemeToggle from './components/ThemeToggle';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors relative">
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -24,7 +24,11 @@ function App() {
             </p>
           </div>
         </footer>
-        <ThemeToggle />
+
+        {/* Theme toggle button positioned above footer */}
+        <div className="fixed bottom-4 right-4 z-50">
+          <ThemeToggle />
+        </div>
       </div>
     </Router>
   );
