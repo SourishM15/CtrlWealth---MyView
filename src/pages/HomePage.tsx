@@ -36,11 +36,6 @@ const HomePage: React.FC = () => {
         if (!us) return;
 
         const states = feature(us, us.objects.states);
-        
-        // Create tooltip
-        const tooltip = d3.select("body").append("div")
-          .attr("class", "absolute hidden bg-black text-white p-2 rounded text-sm")
-          .style("pointer-events", "none");
 
         // Draw states
         svg.append("g")
@@ -55,23 +50,15 @@ const HomePage: React.FC = () => {
           .attr("stroke", "#fff")
           .attr("stroke-width", 0.5)
           .attr("opacity", 0.8)
-          .on("mouseover", (event, d: any) => {
+          .on("mouseover", (event) => {
             d3.select(event.currentTarget)
               .attr("opacity", 1)
               .attr("stroke-width", 1.5);
-            
-            tooltip
-              .style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px")
-              .html(d.properties?.name)
-              .classed("hidden", false);
           })
           .on("mouseout", (event) => {
             d3.select(event.currentTarget)
               .attr("opacity", 0.8)
               .attr("stroke-width", 0.5);
-            
-            tooltip.classed("hidden", true);
           })
           .on("click", (event, d: any) => {
             const stateName = d.properties?.name;
@@ -85,11 +72,6 @@ const HomePage: React.FC = () => {
       .catch(error => {
         console.error("Error loading map data:", error);
       });
-
-    return () => {
-      // Cleanup tooltip
-      d3.select("body").selectAll("div.tooltip").remove();
-    };
   }, [navigate]);
 
   const getQuickStats = () => {
