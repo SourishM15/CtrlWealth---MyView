@@ -1,6 +1,6 @@
 import React from 'react';
-import { FilterState, InequalityMetric } from '../types';
-import { getMetricById, getRegionById } from '../data/inequalityData';
+import { FilterState } from '../types';
+import { getDemographicsSummary } from '../data/seattleDemographics';
 import LineChart from './charts/LineChart';
 import BarChart from './charts/BarChart';
 import Analysis from './Analysis';
@@ -9,25 +9,37 @@ interface VisualizationPanelProps {
   filters: FilterState;
 }
 
+const neighborhoods = [
+  'Ballard',
+  'Capitol Hill',
+  'Downtown',
+  'Fremont',
+  'Queen Anne',
+  'University District',
+  'West Seattle',
+  'South Lake Union'
+];
+
 const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
-  // Helper functions to get the appropriate data based on filters
-  const getFilteredMetrics = (regionId: string): InequalityMetric[] => {
-    const region = getRegionById(regionId);
-    if (!region) return [];
-    
-    return region.metrics.filter(metric => 
-      filters.metrics.length === 0 || filters.metrics.includes(metric.id)
-    );
+  const getNeighborhoodMetrics = () => {
+    return neighborhoods.map(name => {
+      const data = getDemographicsSummary(name);
+      if (!data) return null;
+
+      return {
+        id: name.toLowerCase().replace(/\s+/g, '-'),
+        name,
+        currentValue: data.medianIncome / 1000, // Convert to thousands for better display
+        description: `Median income and demographics for ${name}`,
+        unit: 'k',
+        domain: [0, 120],
+        historicalValues: [], // We could add historical data here if available
+        forecastValues: [] // We could add forecast data here if available
+      };
+    }).filter(Boolean);
   };
 
-  // Get metrics for selected region(s)
-  const primaryMetrics = filters.region === 'comparison' 
-    ? getFilteredMetrics('us') 
-    : getFilteredMetrics(filters.region);
-    
-  const comparisonMetrics = filters.region === 'comparison' 
-    ? getFilteredMetrics('washington') 
-    : undefined;
+  const metrics = getNeighborhoodMetrics();
 
   // Render appropriate charts based on timeframe
   const renderCharts = () => {
@@ -36,38 +48,58 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
       return (
         <div className="grid grid-cols-1 gap-6 mb-6">
           <BarChart 
-            metrics={primaryMetrics} 
-            compareMetrics={comparisonMetrics}
-            title={filters.region === 'comparison' ? "US vs. Washington State Current Values" : "Current Values"}
+            metrics={metrics}
+            title="Median Income by Neighborhood ($K)"
           />
-        </div>
-      );
-    } else if (filters.timeframe === 'historical' || filters.timeframe === 'forecast') {
-      // Show line charts for time series data
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {primaryMetrics.map(metric => (
-            <LineChart
-              key={metric.id}
-              title={metric.name}
-              data={
-                filters.timeframe === 'historical' 
-                  ? metric.historicalValues.filter(
-                      d => d.year >= filters.yearRange[0] && d.year <= filters.yearRange[1]
-                    )
-                  : metric.historicalValues.filter(d => d.year <= 2023)
-              }
-              forecastData={
-                filters.timeframe === 'forecast' 
-                  ? metric.forecastValues.filter(
-                      d => d.year >= Math.max(2024, filters.yearRange[0]) && d.year <= filters.yearRange[1]
-                    )
-                  : undefined
-              }
-              unit={metric.unit}
-              domain={metric.domain}
-            />
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {neighborhoods.map(name => {
+              const data = getDemographicsSummary(name);
+              if (!data) return null;
+
+              return (
+                <div key={name} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{name}</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Population</p>
+                      <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                        {data.totalPopulation.toLocaleString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Median Age</p>
+                      <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                        {data.medianAge.toFixed(1)} years
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Age Distribution</p>
+                      <div className="flex gap-2 mt-1">
+                        <div className="flex-1 bg-blue-100 dark:bg-blue-900 rounded p-2">
+                          <p className="text-xs text-blue-800 dark:text-blue-200">Children</p>
+                          <p className="text-sm font-bold text-blue-900 dark:text-blue-100">
+                            {data.ageDistribution.children}%
+                          </p>
+                        </div>
+                        <div className="flex-1 bg-purple-100 dark:bg-purple-900 rounded p-2">
+                          <p className="text-xs text-purple-800 dark:text-purple-200">Working</p>
+                          <p className="text-sm font-bold text-purple-900 dark:text-purple-100">
+                            {data.ageDistribution.workingAge}%
+                          </p>
+                        </div>
+                        <div className="flex-1 bg-amber-100 dark:bg-amber-900 rounded p-2">
+                          <p className="text-xs text-amber-800 dark:text-amber-200">Elderly</p>
+                          <p className="text-sm font-bold text-amber-900 dark:text-amber-100">
+                            {data.ageDistribution.elderly}%
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
     }
