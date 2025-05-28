@@ -16,13 +16,22 @@ const neighborhoods = [
 
 const SeattleNeighborhoodsPage: React.FC = () => {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
+  const [demographicsData, setDemographicsData] = useState<any | null>(null);
 
   const handleNeighborhoodClick = (name: string) => {
-    setSelectedNeighborhood(name);
+    const data = getDemographicsSummary(name);
+    if (data) {
+      setSelectedNeighborhood(name);
+      setDemographicsData(data);
+    } else {
+      console.warn(`No demographic data found for neighborhood: ${name}`);
+      // Optionally show a user-friendly error message here
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedNeighborhood(null);
+    setDemographicsData(null);
   };
 
   const getDisplayName = (id: string): string => {
@@ -70,10 +79,10 @@ const SeattleNeighborhoodsPage: React.FC = () => {
         </div>
       </div>
 
-      {selectedNeighborhood && (
+      {selectedNeighborhood && demographicsData && (
         <DemographicsModal
           neighborhoodName={selectedNeighborhood}
-          data={getDemographicsSummary(selectedNeighborhood)!}
+          data={demographicsData}
           onClose={handleCloseModal}
         />
       )}
