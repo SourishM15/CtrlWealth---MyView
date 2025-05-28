@@ -1,6 +1,6 @@
 import React from 'react';
 import { DemographicsSummary } from '../types/demographics';
-import { X, Users, Baby, Briefcase, Heart, DollarSign, Male, Female } from 'lucide-react';
+import { X, Users, Baby, Briefcase, Heart, DollarSign, Scale as Male, Scale as Female } from 'lucide-react';
 
 interface DemographicsModalProps {
   neighborhoodName: string;
