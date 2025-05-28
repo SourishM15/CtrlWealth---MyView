@@ -42,7 +42,7 @@ export const neighborhoodResponses: ResponseTemplate[] = [
   },
   {
     keywords: ['compare', 'comparison', 'difference', 'versus', 'vs'],
-    response: 'The neighborhoods show significant demographic variations. For example, South Lake Union and Queen Anne have the highest median incomes ($115,620 and $109,750 respectively), while the University District has the lowest ($52,180). Age distributions also vary widely, from the University District's young median age of 22.9 years to more established neighborhoods.'
+    response: 'The neighborhoods show significant demographic variations. For example, South Lake Union and Queen Anne have the highest median incomes ($115,620 and $109,750 respectively), while the University District has the lowest ($52,180). Age distributions also vary widely, from the University District\'s young median age of 22.9 years to more established neighborhoods.'
   }
 ];
 
