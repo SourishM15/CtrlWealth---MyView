@@ -89,3 +89,5 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
     </div>
   );
 };
+
+export default DemographicsModal
