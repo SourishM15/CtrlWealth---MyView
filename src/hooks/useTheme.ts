@@ -23,6 +23,9 @@ export const useTheme = () => {
       root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+
+    // Force a re-render of all components
+    window.dispatchEvent(new Event('storage'));
   }, [isDark]);
 
   const toggle = () => {
