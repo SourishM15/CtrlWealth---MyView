@@ -95,25 +95,25 @@ const HomePage: React.FC = () => {
         
         {/* Main content area */}
         <div className="lg:col-span-9">
-          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-            <h2 className="text-2xl font-bold mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
               {selectedState === 'WA' ? 'Washington State' : 'United States'} Inequality Overview
             </h2>
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-indigo-50 p-4 rounded-lg">
-                <h3 className="text-sm font-semibold text-indigo-800">Gini Coefficient</h3>
-                <p className="text-2xl font-bold text-indigo-600">{stats.gini}</p>
+              <div className="bg-indigo-50 dark:bg-indigo-900 p-4 rounded-lg">
+                <h3 className="text-sm font-semibold text-indigo-800 dark:text-indigo-200">Gini Coefficient</h3>
+                <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-300">{stats.gini}</p>
               </div>
-              <div className="bg-emerald-50 p-4 rounded-lg">
-                <h3 className="text-sm font-semibold text-emerald-800">Poverty Rate</h3>
-                <p className="text-2xl font-bold text-emerald-600">{stats.poverty}%</p>
+              <div className="bg-emerald-50 dark:bg-emerald-900 p-4 rounded-lg">
+                <h3 className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Poverty Rate</h3>
+                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">{stats.poverty}%</p>
               </div>
-              <div className="bg-amber-50 p-4 rounded-lg">
-                <h3 className="text-sm font-semibold text-amber-800">Top 1% Wealth Share</h3>
-                <p className="text-2xl font-bold text-amber-600">{stats.wealth}%</p>
+              <div className="bg-amber-50 dark:bg-amber-900 p-4 rounded-lg">
+                <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-200">Top 1% Wealth Share</h3>
+                <p className="text-2xl font-bold text-amber-600 dark:text-amber-300">{stats.wealth}%</p>
               </div>
             </div>
-            <div className="w-full h-[500px] bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+            <div className="w-full h-[500px] bg-gray-700 dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-600 dark:border-gray-700">
               <svg ref={mapRef} className="w-full h-full" />
             </div>
           </div>
