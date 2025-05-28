@@ -4,7 +4,7 @@ import { BarChart3 } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-4 shadow-md">
+    <header className="bg-gradient-to-r from-indigo-600 to-purple-700 dark:from-indigo-800 dark:to-purple-900 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-3">
           <BarChart3 size={32} className="text-white" />
@@ -17,7 +17,7 @@ const Header: React.FC = () => {
         <nav className="hidden md:flex space-x-6">
           <Link to="/" className="text-white hover:text-indigo-200 transition-colors font-medium">Home</Link>
           <Link to="/dashboard" className="text-white hover:text-indigo-200 transition-colors font-medium">Dashboard</Link>
-          <a href="#" className="text-white hover:text-indigo-200 transition-colors font-medium">Data Sources</a>
+          <Link to="/seattle" className="text-white hover:text-indigo-200 transition-colors font-medium">Seattle</Link>
           <a href="#" className="text-white hover:text-indigo-200 transition-colors font-medium">About</a>
         </nav>
         
