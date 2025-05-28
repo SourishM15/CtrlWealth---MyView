@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
+import { getDemographicsSummary } from '../data/seattleDemographics';
+import DemographicsModal from '../components/DemographicsModal';
 
 const neighborhoods = [
   { id: 'ballard', name: 'Ballard', description: 'Historic maritime district known for craft breweries and the Hiram M. Chittenden Locks' },
@@ -13,12 +15,35 @@ const neighborhoods = [
 ];
 
 const SeattleNeighborhoodsPage: React.FC = () => {
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null);
+
+  const handleNeighborhoodClick = (name: string) => {
+    setSelectedNeighborhood(name);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNeighborhood(null);
+  };
+
+  const getDisplayName = (id: string): string => {
+    switch (id) {
+      case 'u-district':
+        return 'University District';
+      case 'capitol-hill':
+        return 'Capitol Hill';
+      case 'south-lake-union':
+        return 'South Lake Union';
+      default:
+        return id.charAt(0).toUpperCase() + id.slice(1);
+    }
+  };
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Seattle Neighborhoods</h1>
-          <p className="text-xl text-gray-600">Explore inequality data across Seattle's diverse communities</p>
+          <p className="text-xl text-gray-600">Explore demographic data across Seattle's diverse communities</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -35,15 +60,23 @@ const SeattleNeighborhoodsPage: React.FC = () => {
                 <p className="text-gray-600 mb-4">{neighborhood.description}</p>
                 <button
                   className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-300 group-hover:shadow-md"
-                  onClick={() => console.log(`Viewing ${neighborhood.name} data`)}
+                  onClick={() => handleNeighborhoodClick(getDisplayName(neighborhood.id))}
                 >
-                  View Data
+                  View Demographics
                 </button>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {selectedNeighborhood && (
+        <DemographicsModal
+          neighborhoodName={selectedNeighborhood}
+          data={getDemographicsSummary(selectedNeighborhood)!}
+          onClose={handleCloseModal}
+        />
+      )}
     </main>
   );
 };

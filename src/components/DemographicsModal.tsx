@@ -1,0 +1,91 @@
+import React from 'react';
+import { DemographicsSummary } from '../types/demographics';
+import { X, Users, Baby, Briefcase, Heart } from 'lucide-react';
+
+interface DemographicsModalProps {
+  neighborhoodName: string;
+  data: DemographicsSummary;
+  onClose: () => void;
+}
+
+const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName, data, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 relative">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+        >
+          <X size={24} />
+        </button>
+
+        <div className="p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{neighborhoodName} Demographics</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-indigo-50 rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <Users className="w-5 h-5 text-indigo-600 mr-2" />
+                <h3 className="text-lg font-semibold text-indigo-900">Population</h3>
+              </div>
+              <p className="text-3xl font-bold text-indigo-600">
+                {data.totalPopulation.toLocaleString()}
+              </p>
+            </div>
+
+            <div className="bg-emerald-50 rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <Heart className="w-5 h-5 text-emerald-600 mr-2" />
+                <h3 className="text-lg font-semibold text-emerald-900">Median Age</h3>
+              </div>
+              <p className="text-3xl font-bold text-emerald-600">
+                {data.medianAge.toFixed(1)} years
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Age Distribution</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                  <Baby className="w-8 h-8 text-blue-600" />
+                </div>
+                <p className="text-sm text-gray-600">Children</p>
+                <p className="text-xl font-bold text-gray-900">{data.ageDistribution.children}%</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                  <Briefcase className="w-8 h-8 text-purple-600" />
+                </div>
+                <p className="text-sm text-gray-600">Working Age</p>
+                <p className="text-xl font-bold text-gray-900">{data.ageDistribution.workingAge}%</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-amber-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                  <Heart className="w-8 h-8 text-amber-600" />
+                </div>
+                <p className="text-sm text-gray-600">Elderly</p>
+                <p className="text-xl font-bold text-gray-900">{data.ageDistribution.elderly}%</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Gender Distribution</h3>
+            <div className="bg-gray-100 rounded-lg h-4 overflow-hidden">
+              <div 
+                className="bg-blue-500 h-full"
+                style={{ width: `${data.genderRatio.male}%` }}
+              />
+            </div>
+            <div className="flex justify-between mt-2 text-sm">
+              <span>Male: {data.genderRatio.male}%</span>
+              <span>Female: {data.genderRatio.female}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
