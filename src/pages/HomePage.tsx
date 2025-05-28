@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import ChatInterface from '../components/ChatInterface';
@@ -6,7 +7,8 @@ import { usMetrics, washingtonMetrics } from '../data/inequalityData';
 
 const HomePage: React.FC = () => {
   const mapRef = useRef<SVGSVGElement>(null);
-  const [selectedState, setSelectedState] = useState<'US' | 'WA'>('WA');
+  const [selectedState, setSelectedState] = useState<'US' | 'WA'>('US');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -73,7 +75,11 @@ const HomePage: React.FC = () => {
           })
           .on("click", (event, d: any) => {
             const stateName = d.properties?.name;
-            setSelectedState(stateName === 'Washington' ? 'WA' : 'US');
+            if (stateName === 'Washington') {
+              navigate('/seattle');
+            } else {
+              setSelectedState(stateName === 'Washington' ? 'WA' : 'US');
+            }
           });
       })
       .catch(error => {
@@ -84,7 +90,7 @@ const HomePage: React.FC = () => {
       // Cleanup tooltip
       d3.select("body").selectAll("div.tooltip").remove();
     };
-  }, []);
+  }, [navigate]);
 
   const getQuickStats = () => {
     const metrics = selectedState === 'WA' ? washingtonMetrics : usMetrics;
