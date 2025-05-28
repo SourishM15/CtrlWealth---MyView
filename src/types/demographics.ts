@@ -10,6 +10,7 @@ export interface NeighborhoodDemographics {
   medianAgeMale: number;
   medianAgeFemale: number;
   type: string;
+  medianIncome?: number;
 }
 
 export interface DemographicsSummary {
@@ -24,4 +25,5 @@ export interface DemographicsSummary {
     male: number;
     female: number;
   };
+  medianIncome: number;
 }

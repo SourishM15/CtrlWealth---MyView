@@ -9,9 +9,10 @@ const rawData = {
       aggregateAgeTotal: 369056.7 + 706129.1,
       aggregateAgeMale: 173536 + 352190.6,
       aggregateAgeFemale: 197761.1 + 356414.6,
-      medianAgeTotal: (33 + 33) / 2, // Average of both entries
+      medianAgeTotal: (33 + 33) / 2,
       medianAgeMale: (32 + 32.5) / 2,
-      medianAgeFemale: (34.3 + 33.7) / 2
+      medianAgeFemale: (34.3 + 33.7) / 2,
+      medianIncome: 94250
     }
   },
   "Capitol Hill": {
@@ -24,7 +25,8 @@ const rawData = {
       aggregateAgeFemale: 343317.8 + 746375,
       medianAgeTotal: (31.8 + 32.7) / 2,
       medianAgeMale: (32.4 + 32.8) / 2,
-      medianAgeFemale: (30.7 + 34.4) / 2
+      medianAgeFemale: (30.7 + 34.4) / 2,
+      medianIncome: 89120
     }
   },
   "Downtown": {
@@ -37,7 +39,8 @@ const rawData = {
       aggregateAgeFemale: 704138.1,
       medianAgeTotal: 37.1,
       medianAgeMale: 36.9,
-      medianAgeFemale: 37.9
+      medianAgeFemale: 37.9,
+      medianIncome: 82460
     }
   },
   "Fremont": {
@@ -50,7 +53,8 @@ const rawData = {
       aggregateAgeFemale: 316414.8 + 116644.2,
       medianAgeTotal: (33.4 + 32) / 2,
       medianAgeMale: (33.6 + 31.4) / 2,
-      medianAgeFemale: (33.1 + 32.2) / 2
+      medianAgeFemale: (33.1 + 32.2) / 2,
+      medianIncome: 98340
     }
   },
   "Queen Anne": {
@@ -63,7 +67,8 @@ const rawData = {
       aggregateAgeFemale: 815743.8,
       medianAgeTotal: 35.1,
       medianAgeMale: 34.1,
-      medianAgeFemale: 36.0
+      medianAgeFemale: 36.0,
+      medianIncome: 109750
     }
   },
   "University District": {
@@ -76,7 +81,8 @@ const rawData = {
       aggregateAgeFemale: 268841.7 + 335317.6,
       medianAgeTotal: (23.1 + 22.7) / 2,
       medianAgeMale: (24.3 + 23.4) / 2,
-      medianAgeFemale: (22.5 + 22.2) / 2
+      medianAgeFemale: (22.5 + 22.2) / 2,
+      medianIncome: 52180
     }
   },
   "South Lake Union": {
@@ -89,7 +95,8 @@ const rawData = {
       aggregateAgeFemale: 181019.4,
       medianAgeTotal: 30.1,
       medianAgeMale: 30.2,
-      medianAgeFemale: 35.4
+      medianAgeFemale: 35.4,
+      medianIncome: 115620
     }
   }
 };
@@ -114,6 +121,7 @@ export const getDemographicsSummary = (neighborhoodName: string): DemographicsSu
     genderRatio: {
       male: Math.round((data.aggregateAgeMale / data.aggregateAgeTotal) * 100),
       female: Math.round((data.aggregateAgeFemale / data.aggregateAgeTotal) * 100)
-    }
+    },
+    medianIncome: data.medianIncome
   };
 };

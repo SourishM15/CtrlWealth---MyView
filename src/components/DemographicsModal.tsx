@@ -1,6 +1,6 @@
 import React from 'react';
 import { DemographicsSummary } from '../types/demographics';
-import { X, Users, Baby, Briefcase, Heart } from 'lucide-react';
+import { X, Users, Baby, Briefcase, Heart, DollarSign } from 'lucide-react';
 
 interface DemographicsModalProps {
   neighborhoodName: string;
@@ -22,7 +22,7 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
         <div className="p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{neighborhoodName} Demographics</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-indigo-50 rounded-lg p-4">
               <div className="flex items-center mb-2">
                 <Users className="w-5 h-5 text-indigo-600 mr-2" />
@@ -40,6 +40,16 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
               </div>
               <p className="text-3xl font-bold text-emerald-600">
                 {data.medianAge.toFixed(1)} years
+              </p>
+            </div>
+
+            <div className="bg-amber-50 rounded-lg p-4">
+              <div className="flex items-center mb-2">
+                <DollarSign className="w-5 h-5 text-amber-600 mr-2" />
+                <h3 className="text-lg font-semibold text-amber-900">Median Income</h3>
+              </div>
+              <p className="text-3xl font-bold text-amber-600">
+                ${data.medianIncome.toLocaleString()}
               </p>
             </div>
           </div>
@@ -90,4 +100,4 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
   );
 };
 
-export default DemographicsModal
+export default DemographicsModal;
