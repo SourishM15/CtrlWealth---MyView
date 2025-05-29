@@ -32,10 +32,13 @@ const LineChart: React.FC<LineChartProps> = ({
     // Find the min and max values for x and y axes
     const minYear = Math.min(...data.map(d => d.year));
     const maxYear = Math.max(...data.map(d => d.year));
-    const maxValue = Math.max(...data.map(d => d.value));
 
     // Set up scales
     const xScale = (x: number) => {
+      // Handle case where all data points are in the same year
+      if (minYear === maxYear) {
+        return width / 2; // Center the point horizontally
+      }
       return ((x - minYear) / (maxYear - minYear)) * width;
     };
 
@@ -71,11 +74,11 @@ const LineChart: React.FC<LineChartProps> = ({
 
     // X-axis ticks - show only 5 evenly spaced years
     const yearStep = Math.ceil((maxYear - minYear) / 4);
-    const years = [];
-    for (let year = minYear; year <= maxYear; year += yearStep) {
-      years.push(year);
-    }
-    if (years[years.length - 1] !== maxYear) {
+    const years = minYear === maxYear 
+      ? [minYear] // If all points are in the same year, only show that year
+      : Array.from({ length: 5 }, (_, i) => minYear + i * yearStep).filter(year => year <= maxYear);
+
+    if (minYear !== maxYear && years[years.length - 1] !== maxYear) {
       years.push(maxYear);
     }
 
@@ -162,31 +165,31 @@ const LineChart: React.FC<LineChartProps> = ({
       linePath.setAttribute('stroke', color);
       linePath.setAttribute('stroke-width', '2');
       g.appendChild(linePath);
-      
-      // Add data points
-      data.forEach(point => {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', xScale(point.year).toString());
-        circle.setAttribute('cy', yScale(point.value).toString());
-        circle.setAttribute('r', '3');
-        circle.setAttribute('fill', 'white');
-        circle.setAttribute('stroke', color);
-        circle.setAttribute('stroke-width', '2');
-        g.appendChild(circle);
-
-        // Only show value labels for the years we're displaying on the x-axis
-        if (years.includes(point.year)) {
-          const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          label.setAttribute('x', xScale(point.year).toString());
-          label.setAttribute('y', (yScale(point.value) - 10).toString());
-          label.setAttribute('text-anchor', 'middle');
-          label.setAttribute('font-size', '10');
-          label.setAttribute('fill', '#6b7280');
-          label.textContent = unit ? `${unit}${point.value.toLocaleString()}` : point.value.toLocaleString();
-          g.appendChild(label);
-        }
-      });
     }
+      
+    // Add data points
+    data.forEach(point => {
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', xScale(point.year).toString());
+      circle.setAttribute('cy', yScale(point.value).toString());
+      circle.setAttribute('r', '3');
+      circle.setAttribute('fill', 'white');
+      circle.setAttribute('stroke', color);
+      circle.setAttribute('stroke-width', '2');
+      g.appendChild(circle);
+
+      // Only show value labels for the years we're displaying on the x-axis
+      if (years.includes(point.year)) {
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', xScale(point.year).toString());
+        label.setAttribute('y', (yScale(point.value) - 10).toString());
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-size', '10');
+        label.setAttribute('fill', '#6b7280');
+        label.textContent = unit ? `${unit}${point.value.toLocaleString()}` : point.value.toLocaleString();
+        g.appendChild(label);
+      }
+    });
 
   }, [data, unit, domain, color, title]);
 
