@@ -45,6 +45,13 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
     );
   };
 
+  const calculateSafeDomain = (data: { year: number; value: number }[]): [number, number] => {
+    if (!data.length) return [0, 1]; // Safe default if no data
+    const maxValue = Math.max(...data.map(p => p.value));
+    // If maxValue is 0, return a safe non-zero domain
+    return [0, maxValue || 1];
+  };
+
   const metrics = getNeighborhoodMetrics();
 
   const renderCharts = () => {
@@ -125,7 +132,7 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
                     title={`${name} - Population Trend`}
                     data={filteredData}
                     unit=""
-                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    domain={calculateSafeDomain(filteredData)}
                     color="#4F46E5"
                   />
                 );
@@ -141,7 +148,7 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
                     title={`${name} - Median Income Trend`}
                     data={filteredData}
                     unit="$"
-                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    domain={calculateSafeDomain(filteredData)}
                     color="#10B981"
                   />
                 );
@@ -171,7 +178,7 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
                     title={`${name} - Population Forecast`}
                     data={filteredData}
                     unit=""
-                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    domain={calculateSafeDomain(filteredData)}
                     color="#4F46E5"
                   />
                 );
@@ -187,7 +194,7 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
                     title={`${name} - Median Income Forecast`}
                     data={filteredData}
                     unit="$"
-                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    domain={calculateSafeDomain(filteredData)}
                     color="#10B981"
                   />
                 );
