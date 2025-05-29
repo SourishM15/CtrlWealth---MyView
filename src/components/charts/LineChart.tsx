@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { TimeSeriesData, TimeSeriesPoint } from '../../types';
+import { TimeSeriesPoint } from '../../types';
 
 interface LineChartProps {
   title: string;
@@ -69,9 +69,18 @@ const LineChart: React.FC<LineChartProps> = ({
     xAxisLine.setAttribute('stroke', '#e5e7eb');
     xAxis.appendChild(xAxisLine);
 
-    // X-axis ticks
-    data.forEach(point => {
-      const tickX = xScale(point.year);
+    // X-axis ticks - show only 5 evenly spaced years
+    const yearStep = Math.ceil((maxYear - minYear) / 4);
+    const years = [];
+    for (let year = minYear; year <= maxYear; year += yearStep) {
+      years.push(year);
+    }
+    if (years[years.length - 1] !== maxYear) {
+      years.push(maxYear);
+    }
+
+    years.forEach(year => {
+      const tickX = xScale(year);
       
       const tick = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       tick.setAttribute('x1', tickX.toString());
@@ -87,7 +96,7 @@ const LineChart: React.FC<LineChartProps> = ({
       tickLabel.setAttribute('text-anchor', 'middle');
       tickLabel.setAttribute('font-size', '10');
       tickLabel.setAttribute('fill', '#6b7280');
-      tickLabel.textContent = point.year.toString();
+      tickLabel.textContent = year.toString();
       xAxis.appendChild(tickLabel);
     });
 
@@ -165,15 +174,17 @@ const LineChart: React.FC<LineChartProps> = ({
         circle.setAttribute('stroke-width', '2');
         g.appendChild(circle);
 
-        // Add value label above point
-        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        label.setAttribute('x', xScale(point.year).toString());
-        label.setAttribute('y', (yScale(point.value) - 10).toString());
-        label.setAttribute('text-anchor', 'middle');
-        label.setAttribute('font-size', '10');
-        label.setAttribute('fill', '#6b7280');
-        label.textContent = unit ? `${unit}${point.value.toLocaleString()}` : point.value.toLocaleString();
-        g.appendChild(label);
+        // Only show value labels for the years we're displaying on the x-axis
+        if (years.includes(point.year)) {
+          const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          label.setAttribute('x', xScale(point.year).toString());
+          label.setAttribute('y', (yScale(point.value) - 10).toString());
+          label.setAttribute('text-anchor', 'middle');
+          label.setAttribute('font-size', '10');
+          label.setAttribute('fill', '#6b7280');
+          label.textContent = unit ? `${unit}${point.value.toLocaleString()}` : point.value.toLocaleString();
+          g.appendChild(label);
+        }
       });
     }
 
