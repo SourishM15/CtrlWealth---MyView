@@ -46,9 +46,20 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
   };
 
   const calculateSafeDomain = (data: { year: number; value: number }[]): [number, number] => {
-    if (!data.length) return [0, 1]; // Safe default if no data
-    const maxValue = Math.max(...data.map(p => p.value));
-    return [0, maxValue === 0 ? 1 : maxValue * 1.2]; // Ensure non-zero upper bound
+    if (!data.length) return [0, 100]; // Safe default for empty data
+    const values = data.map(p => p.value);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
+    
+    // If all values are 0 or maxValue equals minValue, return a safe domain
+    if (maxValue === minValue) {
+      const baseValue = maxValue || 100; // Use 100 if maxValue is 0
+      return [0, baseValue * 1.2]; // Add 20% padding
+    }
+    
+    // Add 10% padding to the domain
+    const padding = (maxValue - minValue) * 0.1;
+    return [Math.max(0, minValue - padding), maxValue + padding];
   };
 
   const metrics = getNeighborhoodMetrics();
