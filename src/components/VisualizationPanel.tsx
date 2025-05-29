@@ -16,7 +16,6 @@ const neighborhoods = [
   'Fremont',
   'Queen Anne',
   'University District',
-  'West Seattle',
   'South Lake Union'
 ];
 
@@ -44,7 +43,6 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
   // Render appropriate charts based on timeframe
   const renderCharts = () => {
     if (filters.timeframe === 'current') {
-      // Show bar charts for current values
       return (
         <div className="grid grid-cols-1 gap-6 mb-6">
           <BarChart 
@@ -100,6 +98,62 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
               );
             })}
           </div>
+        </div>
+      );
+    } else if (filters.timeframe === 'historical') {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {neighborhoods.map(name => {
+            const data = getDemographicsSummary(name);
+            if (!data || !data.history) return null;
+
+            return (
+              <React.Fragment key={name}>
+                <LineChart
+                  title={`${name} - Population Trend`}
+                  data={data.history.population}
+                  unit=""
+                  domain={[0, Math.max(...data.history.population.map(p => p.value)) * 1.2]}
+                  color="#4F46E5"
+                />
+                <LineChart
+                  title={`${name} - Median Income Trend`}
+                  data={data.history.medianIncome}
+                  unit="$"
+                  domain={[0, Math.max(...data.history.medianIncome.map(p => p.value)) * 1.2]}
+                  color="#10B981"
+                />
+              </React.Fragment>
+            );
+          })}
+        </div>
+      );
+    } else if (filters.timeframe === 'forecast') {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {neighborhoods.map(name => {
+            const data = getDemographicsSummary(name);
+            if (!data || !data.forecast) return null;
+
+            return (
+              <React.Fragment key={name}>
+                <LineChart
+                  title={`${name} - Population Forecast`}
+                  data={data.forecast.population}
+                  unit=""
+                  domain={[0, Math.max(...data.forecast.population.map(p => p.value)) * 1.2]}
+                  color="#4F46E5"
+                />
+                <LineChart
+                  title={`${name} - Median Income Forecast`}
+                  data={data.forecast.medianIncome}
+                  unit="$"
+                  domain={[0, Math.max(...data.forecast.medianIncome.map(p => p.value)) * 1.2]}
+                  color="#10B981"
+                />
+              </React.Fragment>
+            );
+          })}
         </div>
       );
     }
