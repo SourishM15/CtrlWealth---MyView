@@ -32,12 +32,13 @@ const LineChart: React.FC<LineChartProps> = ({
     // Find the min and max values for x and y axes
     const minYear = Math.min(...data.map(d => d.year));
     const maxYear = Math.max(...data.map(d => d.year));
+    const maxValue = Math.max(...data.map(d => d.value));
 
     // Set up scales
     const xScale = (x: number) => {
-      // Handle case where all data points are in the same year
+      // Handle case where all points are in the same year
       if (minYear === maxYear) {
-        return width / 2; // Center the point horizontally
+        return width / 2; // Center the point
       }
       return ((x - minYear) / (maxYear - minYear)) * width;
     };
@@ -75,7 +76,7 @@ const LineChart: React.FC<LineChartProps> = ({
     // X-axis ticks - show only 5 evenly spaced years
     const yearStep = Math.ceil((maxYear - minYear) / 4);
     const years = minYear === maxYear 
-      ? [minYear] // If all points are in the same year, only show that year
+      ? [minYear] // If all points are in the same year, just show that year
       : Array.from({ length: 5 }, (_, i) => minYear + i * yearStep).filter(year => year <= maxYear);
 
     if (minYear !== maxYear && years[years.length - 1] !== maxYear) {
@@ -166,7 +167,7 @@ const LineChart: React.FC<LineChartProps> = ({
       linePath.setAttribute('stroke-width', '2');
       g.appendChild(linePath);
     }
-      
+    
     // Add data points
     data.forEach(point => {
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
