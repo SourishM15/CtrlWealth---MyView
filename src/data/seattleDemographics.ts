@@ -11,6 +11,14 @@ const generateHistoricalData = (startValue: number, endValue: number, startYear 
   }));
 };
 
+// Generate forecast data from 2020 to 2026
+const generateForecastData = (lastValue: number, growthRate: number) => {
+  return Array.from({ length: 7 }, (_, i) => ({
+    year: 2020 + i,
+    value: Math.round(lastValue * Math.pow(1 + growthRate, i))
+  }));
+};
+
 const rawData = {
   "Ballard": {
     combined: {
@@ -27,6 +35,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(20000, 29000),
         medianIncome: generateHistoricalData(65000, 87000)
+      },
+      forecast: {
+        population: generateForecastData(29000, 0.025),
+        medianIncome: generateForecastData(87000, 0.035)
       }
     }
   },
@@ -45,6 +57,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(35000, 42000),
         medianIncome: generateHistoricalData(55000, 82000)
+      },
+      forecast: {
+        population: generateForecastData(42000, 0.028),
+        medianIncome: generateForecastData(82000, 0.038)
       }
     }
   },
@@ -63,6 +79,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(30000, 42788),
         medianIncome: generateHistoricalData(50000, 75000)
+      },
+      forecast: {
+        population: generateForecastData(42788, 0.022),
+        medianIncome: generateForecastData(75000, 0.032)
       }
     }
   },
@@ -81,6 +101,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(18000, 25939),
         medianIncome: generateHistoricalData(60000, 90000)
+      },
+      forecast: {
+        population: generateForecastData(25939, 0.024),
+        medianIncome: generateForecastData(90000, 0.034)
       }
     }
   },
@@ -99,6 +123,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(40000, 45505),
         medianIncome: generateHistoricalData(70000, 100000)
+      },
+      forecast: {
+        population: generateForecastData(45505, 0.02),
+        medianIncome: generateForecastData(100000, 0.03)
       }
     }
   },
@@ -117,6 +145,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(45000, 52658),
         medianIncome: generateHistoricalData(35000, 48000)
+      },
+      forecast: {
+        population: generateForecastData(52658, 0.015),
+        medianIncome: generateForecastData(48000, 0.025)
       }
     }
   },
@@ -135,6 +167,10 @@ const rawData = {
       history: {
         population: generateHistoricalData(8000, 11976),
         medianIncome: generateHistoricalData(75000, 105000)
+      },
+      forecast: {
+        population: generateForecastData(11976, 0.035),
+        medianIncome: generateForecastData(105000, 0.045)
       }
     }
   }
@@ -162,6 +198,7 @@ export const getDemographicsSummary = (neighborhoodName: string): DemographicsSu
       female: Math.round((data.aggregateAgeFemale / data.aggregateAgeTotal) * 100)
     },
     medianIncome: data.medianIncome,
-    history: data.history
+    history: data.history,
+    forecast: data.forecast
   };
 };
