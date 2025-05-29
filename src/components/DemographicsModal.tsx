@@ -110,12 +110,12 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
                 {showHistorical ? (
                   <>
                     <History className="w-5 h-5 text-indigo-600 mr-2" />
-                    Historical Data
+                    Historical Trends
                   </>
                 ) : (
                   <>
                     <TrendingUp className="w-5 h-5 text-indigo-600 mr-2" />
-                    Forecast Data
+                    Future Projections
                   </>
                 )}
               </h3>
@@ -130,63 +130,35 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
               {showHistorical && data.history ? (
                 <>
                   <LineChart
-                    title="Gini Coefficient"
-                    data={data.history.giniCoefficient}
+                    title="Population Trend"
+                    data={data.history.population}
                     unit=""
-                    domain={[0, 1]}
+                    domain={[0, Math.max(...data.history.population.map(p => p.value)) * 1.2]}
                     color="#4F46E5"
                   />
                   <LineChart
-                    title="Income Ratio (Top 10% / Bottom 50%)"
-                    data={data.history.incomeRatio}
-                    unit="x"
-                    domain={[0, 30]}
+                    title="Median Income Trend"
+                    data={data.history.medianIncome}
+                    unit="$"
+                    domain={[0, Math.max(...data.history.medianIncome.map(p => p.value)) * 1.2]}
                     color="#10B981"
-                  />
-                  <LineChart
-                    title="Poverty Rate"
-                    data={data.history.povertyRate}
-                    unit="%"
-                    domain={[0, 20]}
-                    color="#F59E0B"
-                  />
-                  <LineChart
-                    title="Wealth Share (Top 1%)"
-                    data={data.history.wealthShare}
-                    unit="%"
-                    domain={[0, 50]}
-                    color="#EF4444"
                   />
                 </>
               ) : data.forecast ? (
                 <>
                   <LineChart
-                    title="Gini Coefficient Forecast"
-                    data={data.forecast.giniCoefficient}
+                    title="Population Forecast"
+                    data={data.forecast.population}
                     unit=""
-                    domain={[0, 1]}
+                    domain={[0, Math.max(...data.forecast.population.map(p => p.value)) * 1.2]}
                     color="#4F46E5"
                   />
                   <LineChart
-                    title="Income Ratio Forecast"
-                    data={data.forecast.incomeRatio}
-                    unit="x"
-                    domain={[0, 30]}
+                    title="Median Income Forecast"
+                    data={data.forecast.medianIncome}
+                    unit="$"
+                    domain={[0, Math.max(...data.forecast.medianIncome.map(p => p.value)) * 1.2]}
                     color="#10B981"
-                  />
-                  <LineChart
-                    title="Poverty Rate Forecast"
-                    data={data.forecast.povertyRate}
-                    unit="%"
-                    domain={[0, 20]}
-                    color="#F59E0B"
-                  />
-                  <LineChart
-                    title="Wealth Share Forecast"
-                    data={data.forecast.wealthShare}
-                    unit="%"
-                    domain={[0, 50]}
-                    color="#EF4444"
                   />
                 </>
               ) : null}
