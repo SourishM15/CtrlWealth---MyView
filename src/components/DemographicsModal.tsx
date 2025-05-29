@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DemographicsSummary } from '../types/demographics';
-import { X, Users, Baby, Briefcase, Heart, DollarSign, Scale as Male, Scale as Female, TrendingUp } from 'lucide-react';
+import { X, Users, Baby, Briefcase, Heart, DollarSign, Scale as Male, Scale as Female, TrendingUp, History } from 'lucide-react';
 import LineChart from './charts/LineChart';
 
 interface DemographicsModalProps {
@@ -10,6 +10,8 @@ interface DemographicsModalProps {
 }
 
 const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName, data, onClose }) => {
+  const [showHistorical, setShowHistorical] = useState(false);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 relative">
@@ -102,30 +104,66 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
             </div>
           </div>
 
-          {data.forecast && (
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <TrendingUp className="w-5 h-5 text-indigo-600 mr-2" />
-                Forecast Data
+          <div className="mt-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                {showHistorical ? (
+                  <>
+                    <History className="w-5 h-5 text-indigo-600 mr-2" />
+                    Historical Data
+                  </>
+                ) : (
+                  <>
+                    <TrendingUp className="w-5 h-5 text-indigo-600 mr-2" />
+                    Forecast Data
+                  </>
+                )}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <LineChart
-                  title="Population Forecast"
-                  data={data.forecast.population}
-                  unit=""
-                  domain={[0, Math.max(...data.forecast.population.map(d => d.value)) * 1.1]}
-                  color="#4F46E5"
-                />
-                <LineChart
-                  title="Median Income Forecast"
-                  data={data.forecast.medianIncome}
-                  unit="$"
-                  domain={[0, Math.max(...data.forecast.medianIncome.map(d => d.value)) * 1.1]}
-                  color="#10B981"
-                />
-              </div>
+              <button
+                onClick={() => setShowHistorical(!showHistorical)}
+                className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+              >
+                Show {showHistorical ? 'Forecast' : 'Historical'} Data
+              </button>
             </div>
-          )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {showHistorical && data.history ? (
+                <>
+                  <LineChart
+                    title="Historical Population"
+                    data={data.history.population}
+                    unit=""
+                    domain={[0, Math.max(...data.history.population.map(d => d.value)) * 1.1]}
+                    color="#4F46E5"
+                  />
+                  <LineChart
+                    title="Historical Median Income"
+                    data={data.history.medianIncome}
+                    unit="$"
+                    domain={[0, Math.max(...data.history.medianIncome.map(d => d.value)) * 1.1]}
+                    color="#10B981"
+                  />
+                </>
+              ) : data.forecast ? (
+                <>
+                  <LineChart
+                    title="Population Forecast"
+                    data={data.forecast.population}
+                    unit=""
+                    domain={[0, Math.max(...data.forecast.population.map(d => d.value)) * 1.1]}
+                    color="#4F46E5"
+                  />
+                  <LineChart
+                    title="Median Income Forecast"
+                    data={data.forecast.medianIncome}
+                    unit="$"
+                    domain={[0, Math.max(...data.forecast.medianIncome.map(d => d.value)) * 1.1]}
+                    color="#10B981"
+                  />
+                </>
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
     </div>
