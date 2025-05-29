@@ -40,10 +40,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
   };
 
   const metricOptions = [
-    { id: 'gini', label: 'Gini Coefficient' },
-    { id: 'income-ratio', label: 'Income Ratio' },
-    { id: 'poverty-rate', label: 'Poverty Rate' },
-    { id: 'wealth-top1', label: 'Wealth Share (Top 1%)' }
+    { id: 'population', label: 'Population' },
+    { id: 'median-income', label: 'Median Income' }
   ];
 
   return (
@@ -131,11 +129,11 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
           <LineChart size={18} className="mr-2 text-indigo-600 dark:text-indigo-400" />
           Metrics
         </h3>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-2">
           {metricOptions.map(metric => (
             <label 
               key={metric.id}
-              className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="flex items-center space-x-2 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 w-full"
             >
               <input
                 type="checkbox"
@@ -159,19 +157,19 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             <span>{filters.yearRange[0]}</span>
             <span>{filters.yearRange[1]}</span>
           </div>
-          <div className="px-2">
+          <div className="space-y-4">
             <input
               type="range"
-              min={2000}
-              max={2035}
+              min={2020}
+              max={2026}
               value={filters.yearRange[0]}
               onChange={(e) => handleYearRangeChange(e, 0)}
               className="w-full accent-indigo-600 dark:accent-indigo-400"
             />
             <input
               type="range"
-              min={2000}
-              max={2035}
+              min={2020}
+              max={2026}
               value={filters.yearRange[1]}
               onChange={(e) => handleYearRangeChange(e, 1)}
               className="w-full accent-indigo-600 dark:accent-indigo-400"
