@@ -23,22 +23,34 @@ const Analysis: React.FC<AnalysisProps> = ({ filters }) => {
       data: getDemographicsSummary(name)
     })).filter(item => item.data);
 
-    // Sort neighborhoods by median income
-    const sortedByIncome = [...demographicsData].sort((a, b) => 
-      (b.data?.medianIncome || 0) - (a.data?.medianIncome || 0)
-    );
-
-    // Sort neighborhoods by population
-    const sortedByPopulation = [...demographicsData].sort((a, b) => 
-      (b.data?.totalPopulation || 0) - (a.data?.totalPopulation || 0)
-    );
-
-    // Find youngest and oldest neighborhoods by median age
-    const sortedByAge = [...demographicsData].sort((a, b) => 
-      (a.data?.medianAge || 0) - (b.data?.medianAge || 0)
-    );
-
     if (filters.timeframe === 'current') {
+      // Check if we have enough data for comparison
+      if (demographicsData.length < 2) {
+        return {
+          title: 'Data Availability Notice',
+          content: (
+            <p className="text-amber-600 dark:text-amber-400">
+              Insufficient neighborhood data available for detailed comparison. Please ensure multiple neighborhoods have complete demographic information.
+            </p>
+          )
+        };
+      }
+
+      // Sort neighborhoods by median income
+      const sortedByIncome = [...demographicsData].sort((a, b) => 
+        (b.data?.medianIncome || 0) - (a.data?.medianIncome || 0)
+      );
+
+      // Sort neighborhoods by population
+      const sortedByPopulation = [...demographicsData].sort((a, b) => 
+        (b.data?.totalPopulation || 0) - (a.data?.totalPopulation || 0)
+      );
+
+      // Find youngest and oldest neighborhoods by median age
+      const sortedByAge = [...demographicsData].sort((a, b) => 
+        (a.data?.medianAge || 0) - (b.data?.medianAge || 0)
+      );
+
       return {
         title: 'Seattle Neighborhoods Analysis',
         content: (
