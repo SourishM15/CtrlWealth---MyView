@@ -1,4 +1,4 @@
-import { NeighborhoodDemographics, DemographicsSummary } from '../types/demographics';
+import { NeighborhoodDemographics, DemographicsSummary, NeighborhoodForecast } from '../types/demographics';
 
 const rawData = {
   "Ballard": {
@@ -12,7 +12,19 @@ const rawData = {
       medianAgeTotal: (33 + 33) / 2,
       medianAgeMale: (32 + 32.5) / 2,
       medianAgeFemale: (34.3 + 33.7) / 2,
-      medianIncome: 94250
+      medianIncome: 94250,
+      forecast: {
+        population: [
+          { year: 2024, value: 32730 },
+          { year: 2025, value: 33450 },
+          { year: 2026, value: 34200 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 96135 },
+          { year: 2025, value: 98058 },
+          { year: 2026, value: 100019 }
+        ]
+      }
     }
   },
   "Capitol Hill": {
@@ -26,7 +38,19 @@ const rawData = {
       medianAgeTotal: (31.8 + 32.7) / 2,
       medianAgeMale: (32.4 + 32.8) / 2,
       medianAgeFemale: (30.7 + 34.4) / 2,
-      medianIncome: 89120
+      medianIncome: 89120,
+      forecast: {
+        population: [
+          { year: 2024, value: 76545 },
+          { year: 2025, value: 77890 },
+          { year: 2026, value: 79250 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 90902 },
+          { year: 2025, value: 92720 },
+          { year: 2026, value: 94574 }
+        ]
+      }
     }
   },
   "Downtown": {
@@ -40,7 +64,19 @@ const rawData = {
       medianAgeTotal: 37.1,
       medianAgeMale: 36.9,
       medianAgeFemale: 37.9,
-      medianIncome: 82460
+      medianIncome: 82460,
+      forecast: {
+        population: [
+          { year: 2024, value: 43890 },
+          { year: 2025, value: 44750 },
+          { year: 2026, value: 45620 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 84109 },
+          { year: 2025, value: 85791 },
+          { year: 2026, value: 87507 }
+        ]
+      }
     }
   },
   "Fremont": {
@@ -54,7 +90,19 @@ const rawData = {
       medianAgeTotal: (33.4 + 32) / 2,
       medianAgeMale: (33.6 + 31.4) / 2,
       medianAgeFemale: (33.1 + 32.2) / 2,
-      medianIncome: 98340
+      medianIncome: 98340,
+      forecast: {
+        population: [
+          { year: 2024, value: 25940 },
+          { year: 2025, value: 26450 },
+          { year: 2026, value: 26970 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 100307 },
+          { year: 2025, value: 102313 },
+          { year: 2026, value: 104359 }
+        ]
+      }
     }
   },
   "Queen Anne": {
@@ -68,7 +116,19 @@ const rawData = {
       medianAgeTotal: 35.1,
       medianAgeMale: 34.1,
       medianAgeFemale: 36.0,
-      medianIncome: 109750
+      medianIncome: 109750,
+      forecast: {
+        population: [
+          { year: 2024, value: 46720 },
+          { year: 2025, value: 47650 },
+          { year: 2026, value: 48600 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 111945 },
+          { year: 2025, value: 114184 },
+          { year: 2026, value: 116468 }
+        ]
+      }
     }
   },
   "University District": {
@@ -82,7 +142,19 @@ const rawData = {
       medianAgeTotal: (23.1 + 22.7) / 2,
       medianAgeMale: (24.3 + 23.4) / 2,
       medianAgeFemale: (22.5 + 22.2) / 2,
-      medianIncome: 52180
+      medianIncome: 52180,
+      forecast: {
+        population: [
+          { year: 2024, value: 52658 },
+          { year: 2025, value: 53700 },
+          { year: 2026, value: 54770 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 53224 },
+          { year: 2025, value: 54288 },
+          { year: 2026, value: 55374 }
+        ]
+      }
     }
   },
   "South Lake Union": {
@@ -96,7 +168,19 @@ const rawData = {
       medianAgeTotal: 30.1,
       medianAgeMale: 30.2,
       medianAgeFemale: 35.4,
-      medianIncome: 115620
+      medianIncome: 115620,
+      forecast: {
+        population: [
+          { year: 2024, value: 12280 },
+          { year: 2025, value: 12520 },
+          { year: 2026, value: 12770 }
+        ],
+        medianIncome: [
+          { year: 2024, value: 117932 },
+          { year: 2025, value: 120291 },
+          { year: 2026, value: 122697 }
+        ]
+      }
     }
   }
 };
@@ -122,6 +206,7 @@ export const getDemographicsSummary = (neighborhoodName: string): DemographicsSu
       male: Math.round((data.aggregateAgeMale / data.aggregateAgeTotal) * 100),
       female: Math.round((data.aggregateAgeFemale / data.aggregateAgeTotal) * 100)
     },
-    medianIncome: data.medianIncome
+    medianIncome: data.medianIncome,
+    forecast: data.forecast
   };
 };

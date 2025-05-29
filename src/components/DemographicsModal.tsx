@@ -1,6 +1,7 @@
 import React from 'react';
 import { DemographicsSummary } from '../types/demographics';
-import { X, Users, Baby, Briefcase, Heart, DollarSign, Scale as Male, Scale as Female } from 'lucide-react';
+import { X, Users, Baby, Briefcase, Heart, DollarSign, Scale as Male, Scale as Female, TrendingUp } from 'lucide-react';
+import LineChart from './charts/LineChart';
 
 interface DemographicsModalProps {
   neighborhoodName: string;
@@ -11,7 +12,7 @@ interface DemographicsModalProps {
 const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName, data, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 relative">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 relative">
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
@@ -100,6 +101,31 @@ const DemographicsModal: React.FC<DemographicsModalProps> = ({ neighborhoodName,
               </div>
             </div>
           </div>
+
+          {data.forecast && (
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <TrendingUp className="w-5 h-5 text-indigo-600 mr-2" />
+                Forecast Data
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <LineChart
+                  title="Population Forecast"
+                  data={data.forecast.population}
+                  unit=""
+                  domain={[0, Math.max(...data.forecast.population.map(d => d.value)) * 1.1]}
+                  color="#4F46E5"
+                />
+                <LineChart
+                  title="Median Income Forecast"
+                  data={data.forecast.medianIncome}
+                  unit="$"
+                  domain={[0, Math.max(...data.forecast.medianIncome.map(d => d.value)) * 1.1]}
+                  color="#10B981"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

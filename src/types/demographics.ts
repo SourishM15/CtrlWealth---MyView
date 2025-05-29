@@ -13,6 +13,16 @@ export interface NeighborhoodDemographics {
   medianIncome?: number;
 }
 
+export interface TimeSeriesPoint {
+  year: number;
+  value: number;
+}
+
+export interface NeighborhoodForecast {
+  population: TimeSeriesPoint[];
+  medianIncome: TimeSeriesPoint[];
+}
+
 export interface DemographicsSummary {
   totalPopulation: number;
   ageDistribution: {
@@ -26,4 +36,5 @@ export interface DemographicsSummary {
     female: number;
   };
   medianIncome: number;
+  forecast?: NeighborhoodForecast;
 }
