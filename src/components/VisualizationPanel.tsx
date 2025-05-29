@@ -28,19 +28,25 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
       return {
         id: name.toLowerCase().replace(/\s+/g, '-'),
         name,
-        currentValue: data.medianIncome / 1000, // Convert to thousands for better display
+        currentValue: data.medianIncome / 1000,
         description: `Median income and demographics for ${name}`,
         unit: 'k',
         domain: [0, 120],
-        historicalValues: [], // We could add historical data here if available
-        forecastValues: [] // We could add forecast data here if available
+        historicalValues: [],
+        forecastValues: []
       };
     }).filter(Boolean);
   };
 
+  const filterDataByYearRange = (data: { year: number; value: number }[]) => {
+    return data.filter(point => 
+      point.year >= filters.yearRange[0] && 
+      point.year <= filters.yearRange[1]
+    );
+  };
+
   const metrics = getNeighborhoodMetrics();
 
-  // Render appropriate charts based on timeframe
   const renderCharts = () => {
     if (filters.timeframe === 'current') {
       return (
@@ -105,26 +111,44 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {neighborhoods.map(name => {
             const data = getDemographicsSummary(name);
-            if (!data || !data.history) return null;
+            if (!data?.history) return null;
 
-            return (
-              <React.Fragment key={name}>
-                <LineChart
-                  title={`${name} - Population Trend`}
-                  data={data.history.population}
-                  unit=""
-                  domain={[0, Math.max(...data.history.population.map(p => p.value)) * 1.2]}
-                  color="#4F46E5"
-                />
-                <LineChart
-                  title={`${name} - Median Income Trend`}
-                  data={data.history.medianIncome}
-                  unit="$"
-                  domain={[0, Math.max(...data.history.medianIncome.map(p => p.value)) * 1.2]}
-                  color="#10B981"
-                />
-              </React.Fragment>
-            );
+            // Only show selected metrics
+            const charts = [];
+            
+            if (filters.metrics.includes('population')) {
+              const filteredData = filterDataByYearRange(data.history.population);
+              if (filteredData.length > 0) {
+                charts.push(
+                  <LineChart
+                    key={`${name}-population`}
+                    title={`${name} - Population Trend`}
+                    data={filteredData}
+                    unit=""
+                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    color="#4F46E5"
+                  />
+                );
+              }
+            }
+
+            if (filters.metrics.includes('median-income')) {
+              const filteredData = filterDataByYearRange(data.history.medianIncome);
+              if (filteredData.length > 0) {
+                charts.push(
+                  <LineChart
+                    key={`${name}-income`}
+                    title={`${name} - Median Income Trend`}
+                    data={filteredData}
+                    unit="$"
+                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    color="#10B981"
+                  />
+                );
+              }
+            }
+
+            return charts;
           })}
         </div>
       );
@@ -133,26 +157,44 @@ const VisualizationPanel: React.FC<VisualizationPanelProps> = ({ filters }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {neighborhoods.map(name => {
             const data = getDemographicsSummary(name);
-            if (!data || !data.forecast) return null;
+            if (!data?.forecast) return null;
 
-            return (
-              <React.Fragment key={name}>
-                <LineChart
-                  title={`${name} - Population Forecast`}
-                  data={data.forecast.population}
-                  unit=""
-                  domain={[0, Math.max(...data.forecast.population.map(p => p.value)) * 1.2]}
-                  color="#4F46E5"
-                />
-                <LineChart
-                  title={`${name} - Median Income Forecast`}
-                  data={data.forecast.medianIncome}
-                  unit="$"
-                  domain={[0, Math.max(...data.forecast.medianIncome.map(p => p.value)) * 1.2]}
-                  color="#10B981"
-                />
-              </React.Fragment>
-            );
+            // Only show selected metrics
+            const charts = [];
+            
+            if (filters.metrics.includes('population')) {
+              const filteredData = filterDataByYearRange(data.forecast.population);
+              if (filteredData.length > 0) {
+                charts.push(
+                  <LineChart
+                    key={`${name}-population`}
+                    title={`${name} - Population Forecast`}
+                    data={filteredData}
+                    unit=""
+                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    color="#4F46E5"
+                  />
+                );
+              }
+            }
+
+            if (filters.metrics.includes('median-income')) {
+              const filteredData = filterDataByYearRange(data.forecast.medianIncome);
+              if (filteredData.length > 0) {
+                charts.push(
+                  <LineChart
+                    key={`${name}-income`}
+                    title={`${name} - Median Income Forecast`}
+                    data={filteredData}
+                    unit="$"
+                    domain={[0, Math.max(...filteredData.map(p => p.value)) * 1.2]}
+                    color="#10B981"
+                  />
+                );
+              }
+            }
+
+            return charts;
           })}
         </div>
       );
