@@ -21,11 +21,19 @@ export interface TimeSeriesPoint {
 export interface NeighborhoodHistory {
   population: TimeSeriesPoint[];
   medianIncome: TimeSeriesPoint[];
+  giniCoefficient: TimeSeriesPoint[];
+  incomeRatio: TimeSeriesPoint[];
+  povertyRate: TimeSeriesPoint[];
+  wealthShare: TimeSeriesPoint[];
 }
 
 export interface NeighborhoodForecast {
   population: TimeSeriesPoint[];
   medianIncome: TimeSeriesPoint[];
+  giniCoefficient: TimeSeriesPoint[];
+  incomeRatio: TimeSeriesPoint[];
+  povertyRate: TimeSeriesPoint[];
+  wealthShare: TimeSeriesPoint[];
 }
 
 export interface DemographicsSummary {
