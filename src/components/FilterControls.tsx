@@ -158,22 +158,28 @@ const FilterControls: React.FC<FilterControlsProps> = ({ filters, onFilterChange
             <span>{filters.yearRange[1]}</span>
           </div>
           <div className="space-y-4">
-            <input
-              type="range"
-              min={2020}
-              max={2026}
-              value={filters.yearRange[0]}
-              onChange={(e) => handleYearRangeChange(e, 0)}
-              className="w-full accent-indigo-600 dark:accent-indigo-400"
-            />
-            <input
-              type="range"
-              min={2020}
-              max={2026}
-              value={filters.yearRange[1]}
-              onChange={(e) => handleYearRangeChange(e, 1)}
-              className="w-full accent-indigo-600 dark:accent-indigo-400"
-            />
+            <div className="relative">
+              <input
+                type="range"
+                min={2000}
+                max={2026}
+                value={filters.yearRange[0]}
+                onChange={(e) => handleYearRangeChange(e, 0)}
+                className="w-full accent-indigo-600 dark:accent-indigo-400"
+              />
+              <div className="absolute -top-6 left-0 text-xs text-gray-600">Start Year</div>
+            </div>
+            <div className="relative">
+              <input
+                type="range"
+                min={2000}
+                max={2026}
+                value={filters.yearRange[1]}
+                onChange={(e) => handleYearRangeChange(e, 1)}
+                className="w-full accent-indigo-600 dark:accent-indigo-400"
+              />
+              <div className="absolute -top-6 left-0 text-xs text-gray-600">End Year</div>
+            </div>
           </div>
         </div>
       </div>
